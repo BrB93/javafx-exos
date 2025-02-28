@@ -11,8 +11,7 @@ public class Exo1 extends Application {
     @Override
     public void start(Stage primaryStage) {
         Button button = new Button("Click Me");
-        Label label = new Label("Hello, JavaFX !");
-        StackPane root = new StackPane(button, label);
+        StackPane root = new StackPane(button);
         Scene scene = new Scene(root, 400, 300);
 
         button.setOnAction(e -> {
