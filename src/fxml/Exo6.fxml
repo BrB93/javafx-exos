@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="Ex6.Exo6Controller" spacing="10" style="-fx-padding: 10px; -fx-alignment: center;">
+    <TableView fx:id="tableView">
+        <columns>
+            <TableColumn fx:id="firstNameColumn" text="First Name"/>
+            <TableColumn fx:id="lastNameColumn" text="Last Name"/>
+            <TableColumn fx:id="ageColumn" text="Age"/>
+        </columns>
+    </TableView>
+    <Label fx:id="label" text="Selected person: "/>
+    <Button text="Display selected person in console" onAction="#handleButtonAction"/>
+</VBox>
