@@ -9,6 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
 public class Exo11Controller {
@@ -80,6 +83,16 @@ public class Exo11Controller {
         button.setDisable(true);
         label.setText("Jeu terminé! Score final: " + score);
         System.out.println("Jeu terminé! Score final: " + score);
+        saveScoreToFile(score);
+    }
+
+    private void saveScoreToFile(int score) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Ex11/scores.txt", true))) {
+            writer.write("Score: " + score);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
