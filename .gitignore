@@ -4,6 +4,7 @@
 *.iml
 *.ipr
 out/
+.idea/**
 
 # Java
 *.class
