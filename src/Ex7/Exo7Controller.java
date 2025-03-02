@@ -1,52 +1,116 @@
 package Ex7;
 
-import Ex6.Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
+
+import java.io.File;
+import java.util.Optional;
 
 public class Exo7Controller {
 
     @FXML
-    private TableView<Person> tableView;
-
-    @FXML
-    private TableColumn<Person, String> firstNameColumn;
-
-    @FXML
-    private TableColumn<Person, String> lastNameColumn;
-
-    @FXML
-    private TableColumn<Person, Integer> ageColumn;
+    private Pane pane;
 
     @FXML
     private Label label;
 
     @FXML
-    private void initialize() {
-        // Initialize the columns
-        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
+    private ListView<String> listView;
 
-        // Create a list of persons
-        ObservableList<Person> persons = FXCollections.observableArrayList(
-                new Person("Doe", "John", 25),
-                new Person("Doe", "Jane", 22),
-                new Person("Doe", "Alice", 30),
-                new Person("Doe", "Bob", 28),
-                new Person("Doe", "Eve", 35)
+    @FXML
+    private ImageView imageView;
+
+    private ObservableList<String> images;
+
+    @FXML
+    private void initialize() {
+        // Initialize the list of images with valid URLs of random images from Picsum Photos
+        images = FXCollections.observableArrayList(
+                "https://picsum.photos/800/600?random=1",
+                "https://picsum.photos/800/600?random=2",
+                "https://picsum.photos/800/600?random=3",
+                "https://picsum.photos/800/600?random=4",
+                "https://picsum.photos/800/600?random=5"
         );
-        tableView.setItems(persons);
+        listView.setItems(images);
+
+        // Set custom cell factory to display thumbnails
+        listView.setCellFactory(param -> new ListCell<>() {
+            private final ImageView thumbnail = new ImageView();
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    thumbnail.setImage(new Image(item, 50, 50, true, true));
+                    setGraphic(thumbnail);
+                }
+            }
+        });
     }
 
     @FXML
-    private void handleButtonAction() {
-        // Display the selected person in the console
-        System.out.println("Selected person: " + tableView.getSelectionModel().getSelectedItem());
+    private void handleListViewClick() {
+        // Display the selected image in the ImageView
+        String selectedImage = listView.getSelectionModel().getSelectedItem();
+        if (selectedImage != null) {
+            imageView.setImage(new Image(selectedImage));
+            label.setText("Selected image: " + selectedImage);
+        }
+    }
+
+    @FXML
+    private void addImage() {
+        // Use dialogs to get user input
+        TextInputDialog imageDialog = new TextInputDialog();
+        imageDialog.setTitle("Add Image");
+        imageDialog.setHeaderText("Enter the URL of the image:");
+        Optional<String> imageResult = imageDialog.showAndWait();
+        imageResult.ifPresent(images::add);
+    }
+
+    @FXML
+    private void removeImage() {
+        // Remove the selected image
+        String selectedImage = listView.getSelectionModel().getSelectedItem();
+        if (selectedImage != null) {
+            images.remove(selectedImage);
+            imageView.setImage(null);
+            label.setText("Selected image: ");
+        }
+    }
+
+    @FXML
+    private void handleDragOver(DragEvent event) {
+        if (event.getDragboard().hasFiles()) {
+            event.acceptTransferModes(TransferMode.COPY);
+        }
+        event.consume();
+    }
+
+    @FXML
+    private void handleDragDropped(DragEvent event) {
+        var db = event.getDragboard();
+        boolean success = false;
+        if (db.hasFiles()) {
+            success = true;
+            for (File file : db.getFiles()) {
+                String filePath = file.getAbsolutePath();
+                images.add(filePath);
+                imageView.setImage(new Image("file:" + filePath));
+                label.setText("Selected image: " + filePath);
+            }
+        }
+        event.setDropCompleted(success);
+        event.consume();
     }
 }

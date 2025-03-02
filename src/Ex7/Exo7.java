@@ -16,7 +16,7 @@ public class Exo7 extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Exo7.fxml")));
 
         Scene scene = new Scene(root, 800, 800);
-        primaryStage.setTitle("JavaFX Affichage d'une liste de personnes exo7");
+        primaryStage.setTitle("JavaFX Affichage d'une liste de d'images exo7");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
