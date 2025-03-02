@@ -16,6 +16,4 @@
     </TableView>
     <Label fx:id="label" text="Selected person: "/>
     <Button text="Display selected person in console" onAction="#handleButtonAction"/>
-    <Button text="Add a new person" onAction="#addPerson"/>
-    <Button text="Delete selected person" onAction="#removePerson"/>
 </VBox>
