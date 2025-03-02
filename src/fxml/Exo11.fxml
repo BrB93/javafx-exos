@@ -12,6 +12,7 @@
         <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20px;">
             <Label fx:id="label" text="Score: 0" />
             <Label fx:id="timerLabel" text="Temps restant: 10" />
+            <Button text="Recommencer" onAction="#handleRestart" />
         </VBox>
     </top>
 

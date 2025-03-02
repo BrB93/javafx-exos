@@ -2,6 +2,7 @@ package Ex11;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,6 +34,7 @@ public class Exo11Controller {
         label.setText("Score: " + score);
         timerLabel.setText("Temps restant: " + timeRemaining);
         button.setText("Click me!");
+        button.setDisable(false);
 
         // Initialiser la position du bouton
         moveButton();
@@ -50,13 +52,17 @@ public class Exo11Controller {
         timeline.play();
     }
 
-    // Méthode pour déplacer le bouton à une position aléatoire dans le Pane
+    // Méthode pour déplacer le bouton à une position aléatoire dans le Pane avec une transition fluide
     private void moveButton() {
         // Calculer une position aléatoire dans le Pane
         double x = random.nextDouble() * (vbox.getWidth() - button.getWidth());
         double y = random.nextDouble() * (vbox.getHeight() - button.getHeight());
-        button.setLayoutX(x);
-        button.setLayoutY(y);
+
+        // Créer une transition pour déplacer le bouton
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), button);
+        transition.setToX(x);
+        transition.setToY(y);
+        transition.play();
     }
 
     @FXML
@@ -74,5 +80,13 @@ public class Exo11Controller {
         button.setDisable(true);
         label.setText("Jeu terminé! Score final: " + score);
         System.out.println("Jeu terminé! Score final: " + score);
+    }
+
+    @FXML
+    private void handleRestart() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+        handleStart();
     }
 }
